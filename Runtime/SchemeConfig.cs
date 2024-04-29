@@ -1,13 +1,12 @@
 ﻿using System;
 
-using UnityEngine;
-
 namespace RConfig.Runtime
 {
     [Serializable]
     public class SchemeConfig
     {
-        [SerializeReference] public RCScheme Scheme;
+        public string SchemeTypeFullName;
+        public Type SchemeType() => Type.GetType(SchemeTypeFullName);
         public int SheetId;
     }
 }

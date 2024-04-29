@@ -32,7 +32,7 @@ namespace RConfig.Runtime
 
             foreach (var schemeConfig in _data.SchemeConfigs)
             {
-                var schemeName = schemeConfig.Scheme.GetType().Name;
+                var schemeName = schemeConfig.SchemeType().Name;
                 var csv = _data.GetCsvBySchemeName(schemeName);
                 if (string.IsNullOrEmpty(csv))
                 {
@@ -47,7 +47,7 @@ namespace RConfig.Runtime
                     continue;
                 }
 
-                MapScheme(schemeConfig.Scheme.GetType(), data);
+                MapScheme(schemeConfig.SchemeType(), data);
             }
 
             Debug.Log("RConfig Initialized");
