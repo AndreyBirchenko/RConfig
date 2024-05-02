@@ -45,9 +45,9 @@ namespace RConfig.Editor
                         continue;
                     }
 
-                    if (config == null)
+                    if (config == null || config.SchemeType() == null)
                     {
-                        EditorGUILayout.HelpBox("Scheme is null, delete it", MessageType.Warning, true);
+                        EditorGUILayout.HelpBox("Scheme is broken, delete it", MessageType.Warning, true);
                     }
                     else
                     {
@@ -83,7 +83,7 @@ namespace RConfig.Editor
                 ShowDropdown();
             }
         }
-
+        
         private void ShowDropdown()
         {
             var menu = new GenericMenu();
