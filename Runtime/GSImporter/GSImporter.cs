@@ -20,11 +20,7 @@ namespace AB_GoogleSheetImporter.Runtime
 
         public static async Task<string> DownloadCsvAsync(string url)
         {
-            return await DownloadCsvAsync(url, 0);
-        }
-        
-        public static async Task<string> DownloadCsvAsync(string url, int sheetId)
-        {
+            var sheetId = url.Split("gid=")[1];
             var stringFormat = GetStringFormat(FileFormat.csv);
             var downloadUrl = GetDownloadUrl(url, stringFormat) + $"&gid={sheetId}";
             return await DownloadAsyc(downloadUrl);

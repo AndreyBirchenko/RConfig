@@ -55,11 +55,11 @@ namespace RConfig.Editor
                         EditorGUILayout.LabelField(config.SchemeType().Name, EditorStyles.boldLabel);
                         var indent = EditorGUI.indentLevel;
                         EditorGUI.indentLevel++;
-                        var newSheetId = EditorGUILayout.IntField("Sheet Id", config.SheetId);
-                        if (newSheetId != config.SheetId)
+                        var newPageUrl = EditorGUILayout.TextField("Page url", config.PageUrl);
+                        if (newPageUrl != config.PageUrl)
                         {
                             Undo.RecordObject(_rcData, "Change Sheet Id");
-                            config.SheetId = newSheetId;
+                            config.PageUrl = newPageUrl;
                             EditorUtility.SetDirty(_rcData);
                         }
 

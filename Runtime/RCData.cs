@@ -11,7 +11,6 @@ namespace RConfig.Runtime
 {
     public class RCData : ScriptableObject
     {
-        [SerializeField] private string _googleSheetUrl;
         [HideInInspector] public string LastUpdateTime;
         [HideInInspector] public List<SchemeConfig> SchemeConfigs;
 
@@ -22,9 +21,6 @@ namespace RConfig.Runtime
             UpdateDataAsync();
         }
 
-        [ContextMenu("ClearSchemeConfig")]
-        public void ClearSchemeConfig() => SchemeConfigs.Clear();
-
         private async void UpdateDataAsync()
         {
             _schemeDataCache ??= new List<SchemeData>();
@@ -33,7 +29,7 @@ namespace RConfig.Runtime
             foreach (var config in SchemeConfigs)
             {
                 var schemeName = config.SchemeType().Name;
-                var csv = await GSImporter.DownloadCsvAsync(_googleSheetUrl, config.SheetId);
+                var csv = await GSImporter.DownloadCsvAsync(config.PageUrl);
                 var schemeData = new SchemeData {SchemeName = schemeName, Csv = csv};
                 _schemeDataCache.Add(schemeData);
                 Debug.Log($"Saved {schemeName} \n {csv}");

@@ -7,6 +7,6 @@ namespace RConfig.Runtime
     {
         public string SchemeTypeFullName;
         public Type SchemeType() => Type.GetType(SchemeTypeFullName);
-        public int SheetId;
+        public string PageUrl;
     }
 }
