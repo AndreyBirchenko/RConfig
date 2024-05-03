@@ -9,7 +9,6 @@ using UnityEngine;
 
 namespace RConfig.Runtime
 {
-    [CreateAssetMenu(fileName = nameof(RCData), menuName = "RConfig/" + nameof(RCData), order = 0)]
     public class RCData : ScriptableObject
     {
         [SerializeField] private string _googleSheetUrl;
