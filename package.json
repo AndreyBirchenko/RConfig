@@ -1,0 +1,13 @@
+﻿{
+  "name": "com.andreybirchenko.rconfig",
+  "author": "AndreyBirchenko",
+  "version": "2024.05.10",
+  "displayName": "RConfig",
+  "description": "Remote configuration tool",
+  "unity": "2021.3",
+  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AndreyBirchenko/LeoEcsLiteEntityConverter.git"
+  }
+}
