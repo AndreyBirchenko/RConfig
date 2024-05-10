@@ -40,6 +40,8 @@ namespace RConfig.Editor
                     GUILayout.BeginHorizontal();
                     if (GUILayout.Button("X", GUILayout.ExpandWidth(false)))
                     {
+                        Debug.Log("X");
+
                         _rcData.SchemeConfigs.RemoveAt(i);
                         EditorUtility.SetDirty(_rcData);
                         continue;
@@ -61,6 +63,14 @@ namespace RConfig.Editor
                             Undo.RecordObject(_rcData, "Change Sheet Id");
                             config.PageUrl = newPageUrl;
                             EditorUtility.SetDirty(_rcData);
+                        }
+                        
+                        if (!string.IsNullOrEmpty(config.PageUrl))
+                        {
+                            if (GUILayout.Button("Open url", GUILayout.ExpandWidth(false)))
+                            {
+                                Application.OpenURL(config.PageUrl);
+                            }
                         }
 
                         EditorGUI.indentLevel = indent;
