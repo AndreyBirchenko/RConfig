@@ -109,4 +109,11 @@ namespace AB_GoogleSheetImporter.Runtime
             return ((Task) tcs.Task).GetAwaiter();
         }
     }
+    
+    public enum FileFormat
+    {
+        csv,
+        tsv,
+        ods
+    }
 }
