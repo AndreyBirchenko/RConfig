@@ -8,6 +8,7 @@
         public RCVar(string key)
         {
             _key = key;
+            RConfig.DataUpdated += UpdateValue;
         }
 
         public T Get()
@@ -23,6 +24,11 @@
         private void UpdateValue()
         {
             _value = RConfig.Get<T>(_key);
+        }
+
+        ~RCVar()
+        {
+            RConfig.DataUpdated -= UpdateValue;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 
 using UnityEngine;
 
@@ -34,6 +35,17 @@ namespace RConfig.Runtime.Examples
                 .AppendLine($"Float value = {_simpleData.Get().Value.ToFloat()}");
             
             Debug.Log(sb);
+        }
+
+        [ContextMenu("UpdateData")]
+        public void UpdateData()
+        {
+            RConfig.UpdateData();
+        }
+
+        private void Update()
+        {
+            Debug.Log($"Float value = {_simpleData.Get().Value.ToFloat()}");
         }
     }
 }

@@ -9,6 +9,7 @@ namespace RConfig.Runtime
 {
     public static class RConfig
     {
+        public static event Action DataUpdated = delegate {};
         private static Dictionary<Type, Dictionary<string, RCScheme>> _dataCache;
         private static RCData _data;
 
@@ -27,7 +28,11 @@ namespace RConfig.Runtime
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         public static void Init()
         {
-            _data = Resources.Load<RCData>("RCData");
+            if (!_data)
+            {
+                _data = Resources.Load<RCData>("RCData");
+            }
+            
             _dataCache = new Dictionary<Type, Dictionary<string, RCScheme>>();
 
             foreach (var schemeConfig in _data.SchemeConfigs)
@@ -51,6 +56,15 @@ namespace RConfig.Runtime
             }
 
             Debug.Log("RConfig Initialized");
+            DataUpdated.Invoke();
+        }
+
+        public static void UpdateData()
+        {
+            if(!Application.isPlaying)
+                return;
+            
+            _data.UpdateData();
         }
 
         private static void MapScheme(Type type, Dictionary<string, List<string>> _schemeData)

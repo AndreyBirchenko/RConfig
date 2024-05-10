@@ -37,6 +37,11 @@ namespace RConfig.Runtime
 
 
             LastUpdateTime = DateTime.Now.ToString(CultureInfo.InvariantCulture);
+
+            if (Application.isPlaying)
+            {
+                RConfig.Init();
+            }
         }
 
         public string GetCsvBySchemeName(string schemeName)
