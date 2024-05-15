@@ -40,8 +40,6 @@ namespace RConfig.Editor
                     GUILayout.BeginHorizontal();
                     if (GUILayout.Button("X", GUILayout.ExpandWidth(false)))
                     {
-                        Debug.Log("X");
-
                         _rcData.SchemeConfigs.RemoveAt(i);
                         EditorUtility.SetDirty(_rcData);
                         continue;

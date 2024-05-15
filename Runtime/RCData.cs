@@ -32,7 +32,7 @@ namespace RConfig.Runtime
                 var csv = await GSImporter.DownloadCsvAsync(config.PageUrl);
                 var schemeData = new SchemeData {SchemeName = schemeName, Csv = csv};
                 _schemeDataCache.Add(schemeData);
-                Debug.Log($"Saved {schemeName} \n {csv}");
+                Debug.Log($"Updated {schemeName} \n {csv}");
             }
 
 

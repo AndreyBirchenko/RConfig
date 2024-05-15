@@ -13,26 +13,23 @@ namespace RConfig.Runtime.Examples
         {
             var sb = new StringBuilder();
             
-            var unitOneKey = "unit-one";
-            var unitOneScheme = RConfig.Get<UnitScheme>(unitOneKey);
+            var unitOneScheme = RConfig.Get<UnitScheme>("unit-one");
             sb
-                .AppendLine(unitOneKey)
+                .AppendLine("unit-one")
                 .AppendLine($"Health = {unitOneScheme.Health.ToInt()}")
                 .AppendLine($"Name = {unitOneScheme.Name}")
                 .AppendLine($"OtherData = {unitOneScheme.OtherData.ToFloat()}");
             sb.AppendLine("======================");
             
-            var unitTwoKey = "unit-two";
-            var unitTwoScheme = RConfig.Get<UnitScheme>(unitTwoKey);
+            var unitTwoScheme = RConfig.Get<UnitScheme>("unit-two");
             sb
-                .AppendLine(unitTwoKey)
+                .AppendLine("unit-two")
                 .AppendLine($"Health = {unitTwoScheme.Health.ToInt()}")
                 .AppendLine($"Name = {unitTwoScheme.Name}")
                 .AppendLine($"OtherData = {unitTwoScheme.OtherData.ToBool()}");
             sb.AppendLine("======================");
 
-            sb
-                .AppendLine($"Float value = {_simpleData.Get().Value.ToFloat()}");
+            sb.AppendLine($"Float value = {_simpleData.Get().Value.ToFloat()}");
             
             Debug.Log(sb);
         }

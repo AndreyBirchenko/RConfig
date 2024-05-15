@@ -9,7 +9,7 @@ namespace RConfig.Runtime
 {
     public static class RConfig
     {
-        public static event Action DataUpdated = delegate {};
+        public static event Action DataUpdated = delegate { };
         private static Dictionary<Type, Dictionary<string, RCScheme>> _dataCache;
         private static RCData _data;
 
@@ -32,7 +32,7 @@ namespace RConfig.Runtime
             {
                 _data = Resources.Load<RCData>("RCData");
             }
-            
+
             _dataCache = new Dictionary<Type, Dictionary<string, RCScheme>>();
 
             foreach (var schemeConfig in _data.SchemeConfigs)
@@ -45,7 +45,7 @@ namespace RConfig.Runtime
                     continue;
                 }
 
-                var (data, ok) = CsvReader.ParseKeyedLists(csv, true);
+                (var data, bool ok) = CsvReader.ParseKeyedLists(csv, true);
                 if (!ok)
                 {
                     Debug.LogError($"Can not parse data for {schemeName}");
@@ -61,9 +61,9 @@ namespace RConfig.Runtime
 
         public static void UpdateData()
         {
-            if(!Application.isPlaying)
+            if (!Application.isPlaying)
                 return;
-            
+
             _data.UpdateData();
         }
 
