@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 using Leopotam.Serialization.Csv;
 
@@ -12,6 +13,7 @@ namespace RConfig.Runtime
         public static event Action DataUpdated = delegate { };
         private static Dictionary<Type, Dictionary<string, RCScheme>> _dataCache;
         private static RCData _data;
+        private static TaskCompletionSource<bool> _taskCompletionSource;
 
         public static T Get<T>(string key) where T : RCScheme
         {
@@ -55,8 +57,9 @@ namespace RConfig.Runtime
                 MapScheme(schemeConfig.SchemeType(), data);
             }
 
-            Debug.Log("RConfig Initialized");
             DataUpdated.Invoke();
+            _taskCompletionSource?.SetResult(true);
+            Debug.Log("RConfig Initialized");
         }
 
         public static void UpdateData()
@@ -65,6 +68,18 @@ namespace RConfig.Runtime
                 return;
 
             _data.UpdateData();
+        }
+
+        public static async Task UpdateDataAsync()
+        {
+            if (!Application.isPlaying)
+                return;
+
+            _taskCompletionSource = new TaskCompletionSource<bool>();
+            _data.UpdateData();
+
+            await _taskCompletionSource.Task;
+            _taskCompletionSource = null;
         }
 
         private static void MapScheme(Type type, Dictionary<string, List<string>> _schemeData)

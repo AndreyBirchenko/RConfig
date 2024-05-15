@@ -2,6 +2,7 @@
 using System.Text;
 
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace RConfig.Runtime.Examples
 {
@@ -9,8 +10,14 @@ namespace RConfig.Runtime.Examples
     {
         private RCVar<SimpleScheme> _simpleData = new("float");
         
-        private void Start()
+        private async void Start()
         {
+            Debug.Log("Updating...");
+
+            await RConfig.UpdateDataAsync();
+            
+            Debug.Log("Data updated");
+            
             var sb = new StringBuilder();
             
             var unitOneScheme = RConfig.Get<UnitScheme>("unit-one");
@@ -39,10 +46,16 @@ namespace RConfig.Runtime.Examples
         {
             RConfig.UpdateData();
         }
+        
+        [ContextMenu("ReloadScene")]
+        public void ReloadScene()
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
 
         private void Update()
         {
-            Debug.Log($"Float value = {_simpleData.Get().Value.ToFloat()}");
+            //Debug.Log($"Float value = {_simpleData.Get().Value.ToFloat()}");
         }
     }
 }
