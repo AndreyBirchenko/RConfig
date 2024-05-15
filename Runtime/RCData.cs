@@ -14,7 +14,7 @@ namespace RConfig.Runtime
         [HideInInspector] public string LastUpdateTime;
         [HideInInspector] public List<SchemeConfig> SchemeConfigs;
 
-        private List<SchemeData> _schemeDataCache;
+        [SerializeField, HideInInspector] private List<SchemeData> _schemeDataCache;
 
         public void UpdateData()
         {
@@ -42,6 +42,9 @@ namespace RConfig.Runtime
             {
                 RConfig.Init();
             }
+#if UNITY_EDITOR
+            UnityEditor.EditorUtility.SetDirty(this);
+#endif
         }
 
         public string GetCsvBySchemeName(string schemeName)
