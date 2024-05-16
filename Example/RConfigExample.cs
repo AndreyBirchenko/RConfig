@@ -1,5 +1,6 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
+
+using RConfig.Runtime.DefaultSchemes;
 
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -8,7 +9,7 @@ namespace RConfig.Runtime.Examples
 {
     public class RConfigExample : MonoBehaviour
     {
-        private RCVar<SimpleScheme> _simpleData = new("float");
+        private RCVar<KeyValueScheme> _keyValueData = new("float");
         
         private async void Start()
         {
@@ -36,7 +37,7 @@ namespace RConfig.Runtime.Examples
                 .AppendLine($"OtherData = {unitTwoScheme.OtherData.ToBool()}");
             sb.AppendLine("======================");
 
-            sb.AppendLine($"Float value = {_simpleData.Get().Value.ToFloat()}");
+            sb.AppendLine($"Float value = {_keyValueData.Get().Value.ToFloat()}");
             
             Debug.Log(sb);
         }
