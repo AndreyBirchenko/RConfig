@@ -20,6 +20,7 @@ namespace AB_GoogleSheetImporter.Runtime
 
         public static async Task<string> DownloadCsvAsync(string url)
         {
+            // temp добавить проверку на то что ссылка не публичная
             var sheetId = url.Split("gid=")[1];
             var stringFormat = GetStringFormat(FileFormat.csv);
             var downloadUrl = GetDownloadUrl(url, stringFormat) + $"&gid={sheetId}";
