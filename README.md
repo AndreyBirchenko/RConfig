@@ -124,7 +124,7 @@ private _myCustomScheme = new RCVar<MyCustomScheme>("float_values");
 
 void Update()
 {
-	var floatValue = myCustomScheme.Get().ValueOne.ToFloat();
+    var floatValue = myCustomScheme.Get().ValueOne.ToFloat();
 }
 ```
 
