@@ -73,11 +73,11 @@ void UseData()
 
 > Вы также можете создавать несколько страниц в одной таблице.
 
-После этого [откройте доступ к таблице](https://support.google.com/docs/answer/9331169?hl=ru#6.1) по публичной ссылке
+После этого [откройте доступ к таблице](https://support.google.com/docs/answer/9331169?hl=ru#6.1)
 
 ### Создание схемы
 
-Схема это представление данных вашей таблицы в C# коде. Создайте класс MyCustomScheme по примеру ниже.
+Схема это представление данных таблицы в C# коде.
 
 ```c#
 public class MyCustomScheme : RCScheme
@@ -87,7 +87,7 @@ public class MyCustomScheme : RCScheme
 }
 ```
 
-Важно чтобы для каждого столбца кроме ключа было создано поле.
+> **ВАЖНО!** Для каждого столбца кроме ключа должно быть создано поле
 
 Для удобства пакет уже содержит схему ```KeyValueScheme```
 Она подойдёт для таблиц вида
@@ -99,14 +99,22 @@ public class MyCustomScheme : RCScheme
 
 ### Настройка
 
-После установки пакета в папке Resources автоматически создался объект RCData.
+Создайте в папке Resources файл с названием RCData.txt
 
-С помощью него осуществляется привязка схем к таблицам и обновление данных.
+В этом файле описывается соответствие гугл таблицы схемам
 
-Нажмите кнопку AddScheme и выберите в выпадающем окне схему с названием MyCustomScheme. Скопируйте ссылку на таблицу из
-адресной строки браузера, вставьте в поле Page url и нажмите Update data.
+```
+# Строки, которые начинаются с # это комментарии
+# Добавляйте записи в формате SCHEME_NAME URL
+# Каждая схема должна быть с новой строки
+# Между схемой и ссылкой должен быть пробел
 
-Если вы всё сделали правильно в консоли появится лог ```Updated MyCustomScheme```
+KeyValueScheme https://docs.google.com/spreadsheets/d/XXXX/edit#gid=XXXX
+MyCustomScheme https://docs.google.com/spreadsheets/d/XXXX/edit#gid=XXXX
+
+# Можно использовать одни и те же схемы для разных данных
+KeyValueScheme https://docs.google.com/spreadsheets/d/YYYY/edit#gid=YYYY
+```
 
 ## Использование
 
@@ -130,23 +138,7 @@ void Update()
 
 ### Обновление по ходу исполнения программы
 
-Есть возможность обновлять данные как синронно так и асинхронно
-
-```c#
-private _myCustomScheme = new RCVar<MyCustomScheme>("float_values");
-
-void Start()
-{
-    RConfig.DataUpdated += HandleDataUpdated;
-    RConfig.UpdateData();
-}
-
-void HandleDataUpdated()
-{
-    // Используем обновлённые данные
-    var floatValue = myCustomScheme.Get().ValueOne.ToFloat();
-}
-```
+Есть возможность обновлять данные асинхронно
 
 ```c#
 private _myCustomScheme = new RCVar<MyCustomScheme>("float_values");
