@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 using AB_GoogleSheetImporter.Runtime;
 
 using Leopotam.Serialization.Csv;
-
-using Unity.Plastic.Newtonsoft.Json;
 
 using UnityEngine;
 
@@ -21,7 +20,7 @@ namespace RConfig.Runtime
 
         static RConfig()
         {
-            _cachePath = Path.Combine(Application.persistentDataPath, "RCCache.json");
+            _cachePath = Path.Combine(Application.persistentDataPath, "RCCache.xml");
         }
 
         public static T Get<T>(string key) where T : RCScheme
@@ -86,12 +85,10 @@ namespace RConfig.Runtime
             {
                 var instance = Activator.CreateInstance(type);
 
-#if DEBUG
                 if (instance is not RCScheme rcScheme)
                 {
                     throw new Exception($"Type {type.Name} is not an RCScheme inheritor");
                 }
-#endif
 
                 rcScheme.Map(dataList);
                 mappedData.Add(key, rcScheme);
@@ -119,9 +116,8 @@ namespace RConfig.Runtime
 
                 Debug.Log($"Downloaded {schemeName} \n {csv}");
             }
-
-            var json = JsonConvert.SerializeObject(dataCache, Formatting.Indented);
-            await File.WriteAllTextAsync(_cachePath, json);
+            
+            XmlManager.Serialize(dataCache, _cachePath);
         }
 
         private static List<SchemeConfig> ParseSchemeConfigs()
@@ -153,8 +149,7 @@ namespace RConfig.Runtime
 
         private static void CreateSchemeDataCache()
         {
-            var cachedJson = File.ReadAllText(_cachePath);
-            _schemeDataCache = JsonConvert.DeserializeObject<List<SchemeData>>(cachedJson);
+            _schemeDataCache = XmlManager.Deserialize<List<SchemeData>>(_cachePath);
         }
 
         private static string GetCsvBySchemeName(string schemeName)
