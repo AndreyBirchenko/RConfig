@@ -1,3 +1,0 @@
-# Add your schemes in format of SCHEME_NAME : URL
-KeyValueScheme https://docs.google.com/spreadsheets/d/1WEX21wubLfhQLjqx7cjh8QTE0BxxwV_dWCTu2J-tKn4/edit#gid=320080387
-UnitScheme https://docs.google.com/spreadsheets/d/1WEX21wubLfhQLjqx7cjh8QTE0BxxwV_dWCTu2J-tKn4/edit#gid=0
