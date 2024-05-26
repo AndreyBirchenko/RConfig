@@ -116,13 +116,18 @@ namespace RConfig.Runtime
 
                 Debug.Log($"Downloaded {schemeName} \n {csv}");
             }
-            
+
             XmlManager.Serialize(dataCache, _cachePath);
         }
 
         private static List<SchemeConfig> ParseSchemeConfigs()
         {
             var data = Resources.Load<TextAsset>("RCData");
+            if (data == null)
+            {
+                throw new Exception("Can not find RCData.txt");
+            }
+
             var fileText = data.text;
             var lines = fileText.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
             var output = new List<SchemeConfig>();
