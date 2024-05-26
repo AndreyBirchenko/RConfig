@@ -85,10 +85,13 @@ namespace RConfig.Runtime
             foreach (var (key, dataList) in _schemeData)
             {
                 var instance = Activator.CreateInstance(type);
+
+#if DEBUG
                 if (instance is not RCScheme rcScheme)
                 {
                     throw new Exception($"Type {type.Name} is not an RCScheme inheritor");
                 }
+#endif
 
                 rcScheme.Map(dataList);
                 mappedData.Add(key, rcScheme);
@@ -135,6 +138,13 @@ namespace RConfig.Runtime
                     continue;
 
                 var pair = line.Split(' ');
+#if DEBUG
+                if (pair.Length != 2)
+                {
+                    throw new Exception($"Data in RCData.txt is not valid in line {i + 1}");
+                }
+#endif
+
                 output.Add(new SchemeConfig {SchemeName = pair[0], PageUrl = pair[1]});
             }
 
