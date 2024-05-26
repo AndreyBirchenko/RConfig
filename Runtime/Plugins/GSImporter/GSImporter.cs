@@ -24,7 +24,7 @@ namespace AB_GoogleSheetImporter.Runtime
             var sheetId = url.Split("gid=")[1];
             var stringFormat = GetStringFormat(FileFormat.csv);
             var downloadUrl = GetDownloadUrl(url, stringFormat) + $"&gid={sheetId}";
-            return await DownloadAsyc(downloadUrl);
+            return await DownloadAsync(downloadUrl);
         }
 
         public static async Task DownloadAsync(string fileName, string sheetUrl, string savePath, FileFormat format)
@@ -42,7 +42,7 @@ namespace AB_GoogleSheetImporter.Runtime
                 Directory.CreateDirectory(directoryPath);
             }
 
-            var tableData = await DownloadAsyc(downloadUrl);
+            var tableData = await DownloadAsync(downloadUrl);
             await File.WriteAllTextAsync(finiteSavePath, tableData);
         }
 
@@ -53,7 +53,7 @@ namespace AB_GoogleSheetImporter.Runtime
             return $"https://docs.google.com/spreadsheets/export?id={key}&exportFormat={format}";
         }
 
-        private static async Task<string> DownloadAsyc(string downloadUrl)
+        private static async Task<string> DownloadAsync(string downloadUrl)
         {
             try
             {
