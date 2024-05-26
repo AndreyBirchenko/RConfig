@@ -1,4 +1,5 @@
 # RConfig - простой импорт данных из Google таблиц в Unity
+*Read this in [English](README_en.md)*
 
 ## Цели
 
