@@ -116,6 +116,7 @@ MyCustomScheme https://docs.google.com/spreadsheets/d/XXXX/edit#gid=XXXX
 # Можно использовать одни и те же схемы для разных данных
 KeyValueScheme https://docs.google.com/spreadsheets/d/YYYY/edit#gid=YYYY
 ```
+В контекстном меню нажмите `Tools/RConfig/UpdateData` чтобы закэшировать таблицы
 
 ## Использование
 

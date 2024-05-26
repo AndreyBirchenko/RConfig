@@ -118,6 +118,8 @@ MyCustomScheme https://docs.google.com/spreadsheets/d/XXXX/edit#gid=XXXX
 KeyValueScheme https://docs.google.com/spreadsheets/d/YYYY/edit#gid=YYYY
 ```
 
+In the context menu, click `Tools/RConfig/UpdateData` to cache the tables
+
 ## Usage
 
 ### Reading data
