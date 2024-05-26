@@ -1,8 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
+using AB_GoogleSheetImporter.Runtime;
+
 using Leopotam.Serialization.Csv;
+
+using Unity.Plastic.Newtonsoft.Json;
 
 using UnityEngine;
 
@@ -10,10 +15,14 @@ namespace RConfig.Runtime
 {
     public static class RConfig
     {
-        public static event Action DataUpdated = delegate { };
         private static Dictionary<Type, Dictionary<string, RCScheme>> _dataCache;
-        private static RCData _data;
-        private static TaskCompletionSource<bool> _taskCompletionSource;
+        private static List<SchemeData> _schemeDataCache;
+        private static string _cachePath;
+
+        static RConfig()
+        {
+            _cachePath = Path.Combine(Application.persistentDataPath, "RCCache.json");
+        }
 
         public static T Get<T>(string key) where T : RCScheme
         {
@@ -30,17 +39,17 @@ namespace RConfig.Runtime
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         public static void Init()
         {
-            if (!_data)
-            {
-                _data = Resources.Load<RCData>("RCData");
-            }
+            _dataCache ??= new Dictionary<Type, Dictionary<string, RCScheme>>();
+            _dataCache.Clear();
 
-            _dataCache = new Dictionary<Type, Dictionary<string, RCScheme>>();
+            CreateSchemeDataCache();
 
-            foreach (var schemeConfig in _data.SchemeConfigs)
+            var schemeConfigs = ParseSchemeConfigs();
+            for (int i = 0; i < schemeConfigs.Count; i++)
             {
-                var schemeName = schemeConfig.SchemeType().Name;
-                var csv = _data.GetCsvBySchemeName(schemeName);
+                var schemeConfig = schemeConfigs[i];
+                var schemeName = schemeConfig.SchemeName;
+                var csv = GetCsvBySchemeName(schemeName);
                 if (string.IsNullOrEmpty(csv))
                 {
                     Debug.LogError($"Can not find data for {schemeName}");
@@ -54,20 +63,10 @@ namespace RConfig.Runtime
                     continue;
                 }
 
-                MapScheme(schemeConfig.SchemeType(), data);
+                MapScheme(TypeUtils.GetTypeByName(schemeName), data);
             }
 
-            DataUpdated.Invoke();
-            _taskCompletionSource?.SetResult(true);
             Debug.Log("RConfig Initialized");
-        }
-
-        public static void UpdateData()
-        {
-            if (!Application.isPlaying)
-                return;
-
-            _data.UpdateData();
         }
 
         public static async Task UpdateDataAsync()
@@ -75,11 +74,8 @@ namespace RConfig.Runtime
             if (!Application.isPlaying)
                 return;
 
-            _taskCompletionSource = new TaskCompletionSource<bool>();
-            _data.UpdateData();
-
-            await _taskCompletionSource.Task;
-            _taskCompletionSource = null;
+            await DownloadDataAsync();
+            Init();
         }
 
         private static void MapScheme(Type type, Dictionary<string, List<string>> _schemeData)
@@ -99,6 +95,70 @@ namespace RConfig.Runtime
             }
 
             _dataCache.Add(type, mappedData);
+        }
+
+        public static async Task DownloadDataAsync()
+        {
+            var configs = ParseSchemeConfigs();
+            var dataCache = new SchemeData[configs.Count];
+
+            for (int i = 0; i < configs.Count; i++)
+            {
+                var schemeName = configs[i].SchemeName;
+                var pageUrl = configs[i].PageUrl;
+                var csv = await GSImporter.DownloadCsvAsync(pageUrl);
+                dataCache[i] = new SchemeData
+                {
+                    SchemeName = schemeName,
+                    UpdatedAt = DateTime.Now,
+                    Csv = csv,
+                };
+
+                Debug.Log($"Downloaded {schemeName} \n {csv}");
+            }
+
+            var json = JsonConvert.SerializeObject(dataCache, Formatting.Indented);
+            await File.WriteAllTextAsync(_cachePath, json);
+        }
+
+        private static List<SchemeConfig> ParseSchemeConfigs()
+        {
+            var data = Resources.Load<TextAsset>("RCData");
+            var fileText = data.text;
+            var lines = fileText.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
+            var output = new List<SchemeConfig>();
+
+            for (int i = 0; i < lines.Length; i++)
+            {
+                var line = lines[i];
+                if (line.StartsWith("#"))
+                    continue;
+
+                var pair = line.Split(' ');
+                output.Add(new SchemeConfig {SchemeName = pair[0], PageUrl = pair[1]});
+            }
+
+            return output;
+        }
+
+        private static void CreateSchemeDataCache()
+        {
+            var cachedJson = File.ReadAllText(_cachePath);
+            _schemeDataCache = JsonConvert.DeserializeObject<List<SchemeData>>(cachedJson);
+        }
+
+        private static string GetCsvBySchemeName(string schemeName)
+        {
+            for (int i = 0; i < _schemeDataCache.Count; i++)
+            {
+                var data = _schemeDataCache[i];
+                if (data.SchemeName == schemeName)
+                {
+                    return data.Csv;
+                }
+            }
+
+            throw new Exception($"Can not find data by scheme name {schemeName}");
         }
     }
 }

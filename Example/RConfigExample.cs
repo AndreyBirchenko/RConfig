@@ -45,7 +45,7 @@ namespace RConfig.Runtime.Examples
         [ContextMenu("UpdateData")]
         public void UpdateData()
         {
-            RConfig.UpdateData();
+            RConfig.UpdateDataAsync();
         }
         
         [ContextMenu("ReloadScene")]

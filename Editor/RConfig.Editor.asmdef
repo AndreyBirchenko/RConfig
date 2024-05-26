@@ -2,7 +2,7 @@
     "name": "RConfig.Editor",
     "rootNamespace": "",
     "references": [
-        "RConfig.Runtime"
+        "GUID:fb28d6e334d9a3d49b369e4f50a9f099"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

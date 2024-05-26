@@ -8,27 +8,11 @@
         public RCVar(string key)
         {
             _key = key;
-            RConfig.DataUpdated += UpdateValue;
         }
 
         public T Get()
         {
-            if (_value == null)
-            {
-                UpdateValue();
-            }
-
-            return _value;
-        }
-
-        private void UpdateValue()
-        {
-            _value = RConfig.Get<T>(_key);
-        }
-
-        ~RCVar()
-        {
-            RConfig.DataUpdated -= UpdateValue;
+            return RConfig.Get<T>(_key);
         }
     }
 }

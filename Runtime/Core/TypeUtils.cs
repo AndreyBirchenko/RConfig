@@ -5,7 +5,7 @@ namespace RConfig.Runtime
 {
     public static class TypeUtils
     {
-        private static List<Type> _schemeTypesCache = new();
+        private static Dictionary<string,Type> _schemeTypesByNames = new();
 
         static TypeUtils()
         {
@@ -17,12 +17,20 @@ namespace RConfig.Runtime
                 {
                     if (schemeType.IsAssignableFrom(type) && type != schemeType)
                     {
-                        _schemeTypesCache.Add(type);
+                        _schemeTypesByNames.Add(type.Name, type);
                     }
                 }
             }
         }
 
-        public static List<Type> GetSchemeTypes() => _schemeTypesCache;
+        public static Type GetTypeByName(string name)
+        {
+            if (_schemeTypesByNames.TryGetValue(name, out var value))
+            {
+                return value;
+            }
+
+            throw new Exception($"Can not find type by name {name}");
+        }
     }
 }
