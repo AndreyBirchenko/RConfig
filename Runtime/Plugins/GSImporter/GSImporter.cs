@@ -101,9 +101,9 @@ namespace AB_GoogleSheetImporter.Runtime
         }
     }
 
-    public static class AsyncExtensions
+    internal static class AsyncExtensions
     {
-        public static TaskAwaiter GetAwaiter(this AsyncOperation operation)
+        internal static TaskAwaiter GetAwaiter(this AsyncOperation operation)
         {
             var tcs = new TaskCompletionSource<object>();
             operation.completed += _ => tcs.SetResult(null);
