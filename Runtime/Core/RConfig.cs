@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using System.Xml.Serialization;
 
 using AB_GoogleSheetImporter.Runtime;
 
@@ -139,12 +138,10 @@ namespace RConfig.Runtime
                     continue;
 
                 var pair = line.Split(' ');
-#if DEBUG
                 if (pair.Length != 2)
                 {
                     throw new Exception($"Data in RCData.txt is not valid in line {i + 1}");
                 }
-#endif
 
                 output.Add(new SchemeConfig {SchemeName = pair[0], PageUrl = pair[1]});
             }

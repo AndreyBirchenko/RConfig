@@ -1,7 +1,7 @@
 ﻿{
   "name": "com.andrey_birchenko.rconfig",
   "author": "AndreyBirchenko",
-  "version": "2024.5.10",
+  "version": "2024.5.26",
   "displayName": "RConfig",
   "description": "Remote configuration tool",
   "unity": "2021.3",
