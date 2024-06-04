@@ -16,10 +16,15 @@ namespace RConfig.Runtime
         private static Dictionary<Type, Dictionary<string, RCScheme>> _dataCache;
         private static List<SchemeData> _schemeDataCache;
         private static string _cachePath;
+        private static string _cacheFolderPath;
 
         static RConfig()
         {
-            _cachePath = Path.Combine(Application.persistentDataPath, "RCCache.xml");
+            _cacheFolderPath = Application.dataPath + "/Resources";
+            _cachePath = Path.Combine(_cacheFolderPath, "RCCache.xml");
+
+            if (!Directory.Exists(_cacheFolderPath))
+                Directory.CreateDirectory(_cacheFolderPath);
         }
 
         public static T Get<T>(string key) where T : RCScheme
